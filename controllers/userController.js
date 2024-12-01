@@ -31,29 +31,55 @@ const createSendToken = (user, statusCode, res, expiryTime) => {
 
 exports.signup = catchAsync(async (req, res) => {
     const { username, email, password } = req.body;
+
     try {
+        // Validate required fields
+        if (!username || !email || !password) {
+            return res.status(400).json("All fields are required.");
+        }
+
+        // Check if the user already exists with the same username
         let existingUser = await User.findOne({ username });
         if (existingUser) {
             return res.status(409).json("User already exists with provided username!");
         }
 
+        // Check if the user already exists with the same email
         existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(409).json("User already exists with provided email!");
         }
 
-        const hashedPassword = await hashPassword(password);
+        // Hash the password
+        let hashedPassword;
+        try {
+            hashedPassword = await hashPassword(password);
+            if (!hashedPassword) {
+                return res.status(500).json("Password hashing failed.");
+            }
+        } catch (err) {
+            return res.status(500).json({ message: "Password hashing error", error: err.message });
+        }
+
+        // Log the data to check before creating the user
+        console.log('Creating new user:', { username, email });
+
+        // Create the new user
         const newUser = await User.create({ username, email, password: hashedPassword });
 
+        // Send the token
         createSendToken(newUser, 201, res);
+
     } catch (err) {
+        console.error("Signup error:", err);
         if (err.code === 11000) {
-            res.status(409).json("User already exists!");
+            return res.status(409).json("User already exists!");
         } else {
-            res.status(500).json("Internal server error! Please try again!");
+            return res.status(500).json({ message: "Internal server error! Please try again.", error: err.message });
         }
     }
 });
+
 
 exports.login = catchAsync(async (req, res) => {
     const { username, password } = req.body;
