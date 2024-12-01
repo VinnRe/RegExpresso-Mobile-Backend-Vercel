@@ -11,7 +11,7 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/parse", parseRoutes);
 
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
   res.send('WORKING!');
 });
 
