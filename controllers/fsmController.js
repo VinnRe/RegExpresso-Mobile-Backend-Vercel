@@ -235,3 +235,32 @@ exports.sendSvgNFA = catchAsync(async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+exports.sendSvgDFA = catchAsync(async (req, res) => {
+  const { regEx } = req.body;
+  if (!regEx) {
+    return res.status(400).send('Regular expression is required');
+  }
+
+  try {
+    const parser = new regParser.RegParser(regEx);
+    const fsm = parser.parseToDFA();
+    const dotScript = fsm.toDotScript();
+    console.log(dotScript);
+
+    const viz = new Viz({ Module, render });
+    const svgContent = await viz.renderString(dotScript);
+
+    console.log(svgContent);
+
+    return res.json({
+      message: 'FSM visualized successfully',
+      svg: svgContent,
+    });
+
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+

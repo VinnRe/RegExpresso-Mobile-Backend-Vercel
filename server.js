@@ -11,10 +11,6 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/parse", parseRoutes);
 
-app.get('/', (req, res) => {
-  res.send('WORKING!');
-});
-
 // Error handling middleware
 app.use((err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
