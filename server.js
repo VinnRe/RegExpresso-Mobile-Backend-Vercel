@@ -15,6 +15,8 @@ app.get("/test", (req, res) => {
   res.send("WORKING")
 })
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
