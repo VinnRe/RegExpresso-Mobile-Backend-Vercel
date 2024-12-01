@@ -3,6 +3,7 @@ const router = express.Router();
 const parseController = require("../controllers/fsmController.js");
 const userController = require("../controllers/userController.js");
 
+// Routes
 router.route("/visualizeNFA").post(parseController.visualizeNFA);
 router.route("/visualizeDFA").post(parseController.visualizeDFA);
 router.route("/save").post(userController.protect, parseController.saveRegEx);
