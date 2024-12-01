@@ -11,7 +11,7 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/parse", parseRoutes);
 
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
   res.send('WORKING!');
 });
 
@@ -37,6 +37,6 @@ mongoose.connect(process.env.URI, {
   console.error('Error connecting to MongoDB:', error.message);
 });
 
-// app.listen(port, () => {
-// console.log(`Server is running on ${port}`);
-// });
+app.listen(port, () => {
+console.log(`Server is running on ${port}`);
+});
