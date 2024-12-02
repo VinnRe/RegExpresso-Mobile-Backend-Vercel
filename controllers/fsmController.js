@@ -93,43 +93,36 @@ exports.saveRegEx = catchAsync(async (req, res) => {
   const { regEx } = req.body;
 
   if (!regEx) {
-      return res.status(400).json({ error: 'Regex is required.' });
+    return res.status(400).json({ error: 'Regex is required.' });
   }
 
   try {
-      // Log incoming request for debugging
-      console.log(`Saving regex for user ${req.user.id}`);
-      
-      const startTime = Date.now();  // Track time to measure how long it takes
-      
-      // Save the regex automaton to the DB
-      const automaton = await Automaton.create({
-          regEx,
-          userId: req.user.id 
-      });
+    console.log(`Checking for existing regex for user ${req.user.id}`);
 
-      const endTime = Date.now();  // Track time after database operation
+    // Check if regex already exists
+    const existingAutomaton = await Automaton.findOne({ regEx, userId: req.user.id });
+    if (existingAutomaton) {
+      return res.status(400).json({ error: 'Regex already exists.' });
+    }
 
-      console.log(`Automaton saved in ${endTime - startTime} ms.`);  // Log the duration
-      
-      // Respond with success
-      res.status(201).json({
-          status: 'success',
-          data: {
-              automaton
-          }
-      });
+    console.log(`Saving regex for user ${req.user.id}`);
+    const automaton = await Automaton.create({ regEx, userId: req.user.id });
+
+    res.status(201).json({
+      status: 'success',
+      data: { automaton },
+    });
 
   } catch (error) {
-      console.error("Error saving regex:", error);  // Log the error for debugging
-
-      res.status(500).json({
-          status: 'error',
-          message: 'Failed to save regex',
-          error: error.message
-      });
+    console.error("Error saving regex:", error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to save regex',
+      error: error.message,
+    });
   }
 });
+
 
 exports.deleteRegEx = catchAsync(async (req, res) => {
   const { id } = req.params;
