@@ -212,11 +212,6 @@ exports.sendSvgDFA = catchAsync(async (req, res) => {
     const svgContent = await viz.renderString(dotScript);
 
     console.log(svgContent);
-    // Ensure transparent background
-    svgContent = svgContent.replace(
-      /<polygon[^>]*fill="#ffffff"[^>]*>/,
-      '<polygon fill="#e8cdad" stroke="none"/>'
-    );
 
     return res.json({
       message: 'FSM visualized successfully',
