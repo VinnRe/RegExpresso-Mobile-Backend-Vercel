@@ -1,4 +1,4 @@
-const DOTSCRIPTHEADER = 'digraph finite_state_machine {rankdir = LR;';
+const DOTSCRIPTHEADER = 'digraph finite_state_machine {rankdir = LR; bgcolor=transparent;';
 const DOTSCRIPTEND = '}';
 
 function escapeCharacter(token) {
