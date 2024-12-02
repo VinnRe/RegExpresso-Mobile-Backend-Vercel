@@ -33,7 +33,7 @@ exports.signup = catchAsync(async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
-        // Validate required fields
+        // Validate required fieldss
         if (!username || !email || !password) {
             return res.status(400).json("All fields are required.");
         }
