@@ -89,7 +89,6 @@ exports.to5TuplesDFA = catchAsync(async (req, res) => {
   }
 });
 
-
 exports.saveRegEx = catchAsync(async (req, res) => {
   const { regEx } = req.body;
 
@@ -98,18 +97,32 @@ exports.saveRegEx = catchAsync(async (req, res) => {
   }
 
   try {
+      // Log incoming request for debugging
+      console.log(`Saving regex for user ${req.user.id}`);
+      
+      const startTime = Date.now();  // Track time to measure how long it takes
+      
+      // Save the regex automaton to the DB
       const automaton = await Automaton.create({
           regEx,
           userId: req.user.id 
       });
 
+      const endTime = Date.now();  // Track time after database operation
+
+      console.log(`Automaton saved in ${endTime - startTime} ms.`);  // Log the duration
+      
+      // Respond with success
       res.status(201).json({
           status: 'success',
           data: {
               automaton
           }
       });
+
   } catch (error) {
+      console.error("Error saving regex:", error);  // Log the error for debugging
+
       res.status(500).json({
           status: 'error',
           message: 'Failed to save regex',
@@ -117,7 +130,6 @@ exports.saveRegEx = catchAsync(async (req, res) => {
       });
   }
 });
-
 
 exports.deleteRegEx = catchAsync(async (req, res) => {
   const { id } = req.params;
