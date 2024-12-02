@@ -215,7 +215,7 @@ exports.sendSvgDFA = catchAsync(async (req, res) => {
     // Ensure transparent background
     svgContent = svgContent.replace(
       /<polygon[^>]*fill="#ffffff"[^>]*>/,
-      '<polygon fill="none" stroke="none"/>'
+      '<polygon fill="#e8cdad" stroke="none"/>'
     );
 
     return res.json({
