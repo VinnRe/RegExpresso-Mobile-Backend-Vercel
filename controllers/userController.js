@@ -31,7 +31,9 @@ const createSendToken = (user, statusCode, res, expiryTime) => {
 
 exports.signup = catchAsync(async (req, res) => {
     const { username, email, password } = req.body;
-
+    if (!password || password.length < 8) {
+        return next(new AppError("Password must be at least 8 characters long", 400));
+      }
     try {
         // Validate required fieldss
         if (!username || !email || !password) {
