@@ -40,7 +40,7 @@ exports.signup = catchAsync(async (req, res) => {
             return res.status(400).json("All fields are required.");
         }
 
-        // Check if the user already exists with the same username
+        // Check if the user already exists with the same  username
         let existingUser = await User.findOne({ username });
         if (existingUser) {
             return res.status(409).json("User already exists with provided username!");
