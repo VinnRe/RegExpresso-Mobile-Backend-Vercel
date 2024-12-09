@@ -14,11 +14,11 @@ function escapeCharacter(token) {
 
 exports.toDotScript = function (fsm) {
   const generateTransitions = () => {
-    let transitionDotScript = '  node [shape = circle, style = filled, fillcolor = "#e8cdad", color = "#3d2413", fontcolor = "#3d2413"];';
+    let transitionDotScript = '  node [shape = circle, style = filled, fillcolor = "#785444", color = "#e8cdad", fontcolor = "#e8cdad"];';
     for (const fromId in fsm.transitions) {
       for (const toId in fsm.transitions[fromId]) {
         const label = escapeCharacter(fsm.transitions[fromId][toId]);
-        transitionDotScript += `  ${fromId} -> ${toId} [label="${label}", color = "#3d2413", fontcolor = "#3d2413"];`;
+        transitionDotScript += `  ${fromId} -> ${toId} [label="${label}", color = "#e8cdad", fontcolor = "#e8cdad"];`;
       }
     }
     return transitionDotScript;
@@ -35,13 +35,13 @@ exports.toDotScript = function (fsm) {
       const isInitialState = fsm.initialState === stateId;
 
       if (isAcceptState) {
-        acceptStatesDotScript += `  node [shape = doublecircle, style = filled, fillcolor = "#e8cdad", color = "#3d2413", fontcolor = "#3d2413"]; ${stateId};`;
+        acceptStatesDotScript += `  node [shape = doublecircle, style = filled, fillcolor = "#785444", color = "#e8cdad", fontcolor = "#e8cdad"]; ${stateId};`;
       }
 
       if (isInitialState) {
-        initialStatesStartDotScript += `  "" -> ${stateId} [label = "start", color = "#3d2413", fontcolor = "#3d2413"];`;
+        initialStatesStartDotScript += `  "" -> ${stateId} [label = "start", color = "#e8cdad", fontcolor = "#e8cdad"];`;
         if (!isAcceptState) {
-          initialStatesDotScript += `  node [shape = circle, style = filled, fillcolor = "#e8cdad", color = "#3d2413", fontcolor = "#3d2413"]; ${stateId};`;
+          initialStatesDotScript += `  node [shape = circle, style = filled, fillcolor = "#785444", color = "#e8cdad", fontcolor = "#e8cdad"]; ${stateId};`;
         }
       }
     }
